@@ -615,7 +615,8 @@ func main() {
 		fmt.Printf("%s\n", printVersionString())
 		return
 	}
-	fmt.Printf("%s\n", "---------->hello-world-----------------xej-----------")
+	fmt.Printf("%s\n", "---------->hello-world-----------------xej------1-----")
+	fmt.Printf("%s\n", "---------->hello-world-----------------xej------2-----")
 	logging.SetLogFile("/opt/cni/log/multus-cni.log")
 
 	skel.PluginMain(
