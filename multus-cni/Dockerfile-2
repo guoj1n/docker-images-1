@@ -1,0 +1,22 @@
+# This Dockerfile is used to build the image available on DockerHub
+#build stage
+FROM golang:alpine AS builder
+ENV GOPATH /gopath
+ENV PATH  ${GOPATH}/bin:${PATH}
+
+ADD . /usr/src/multus-cni
+
+RUN sh /usr/src/multus-cni/build
+
+#final stage
+FROM alpine:latest
+RUN apk --no-cache add ca-certificates
+ENV TZ="Asia/Shanghai"
+RUN apk --no-cache add tzdata && ln -sf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+ENV GOPATH /gopath
+
+COPY --from=builder /usr/src/multus-cni /usr/src/multus-cni
+WORKDIR /
+
+ADD ./images/entrypoint.sh /
+ENTRYPOINT ["/entrypoint.sh"]
